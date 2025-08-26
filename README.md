@@ -7,7 +7,7 @@ identify trends, and explore the housing landscape with interactive filters.
 ---
 
 ## 🚀 Live Demo
-👉 Check out the interactive dashboard here: [Dallas Housing Dashboard (Streamlit)]('https://halilkoca-dataanalystpath-app-mkmukb.streamlit.app/')
+👉 Check out the interactive dashboard here: [Dallas Housing Dashboard (Streamlit)](https://halilkoca-dataanalystpath-app-mkmukb.streamlit.app/)
 
 ---
 
@@ -39,4 +39,4 @@ Key features:
 ---
 
 👤 **Author**: Halil  
-📧 Feel free to connect with me on [LinkedIn]('https://www.linkedin.com/in/halilkoca/')
+📧 Feel free to connect with me on [LinkedIn](https://www.linkedin.com/in/halilkoca/)
