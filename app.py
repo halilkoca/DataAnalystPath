@@ -75,3 +75,28 @@ if "lat" in df_filtered.columns and "long" in df_filtered.columns:
                              zoom=4,
                              mapbox_style="open-street-map")
     st.plotly_chart(fig2)
+
+# Price Distribution Histogram
+# where most homes are priced
+st.subheader('Price Distribution')
+fig3 = px.histogram(df_filtered,
+                    x='listPrice',
+                    nbins=50,
+                    title='The histogram shows us in which ranges prices are concentrated.',
+                    labels={'listPrice': 'Price ($)'})
+st.plotly_chart(fig3)
+
+
+# Scatter Plot: Sqft vs Price
+# This is a must-have for investors 📈 because it reveals the relationship between home size (sqft) and price.
+# Large but cheap homes → potential investment opportunities.
+# Small but overpriced homes → possible overvalued risks.
+if 'sqft' in df_filtered.columns:
+    st.subheader('Square Footage vs Price')
+    fig4 = px.scatter(df_filtered,
+                      x='sqft',
+                      y='listPrice',
+                      color='beds',
+                      hover_data=['baths', 'type'],
+                      title='Highlights good vs bad investment opportunities')
+    st.plotly_chart(fig4)
