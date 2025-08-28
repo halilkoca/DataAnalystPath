@@ -5,33 +5,48 @@ import plotly.express as px
 # read data
 df = pd.read_csv("data/real_estate_texas_500_2024.csv")
 
-# Land ve Farm dışındakiler
+# out of Land ve Farm
 filtered_df = df[~df['type'].isin(["land", "farm"])]
 
-# Boş beds değerlerini çıkar
+# removes beds NaN
 filtered_df = filtered_df[filtered_df['beds'].notna()]
 
 # --- Streamlit Dashboard ---
 st.title("🏡 Texas Housing Market Analysis")
 
-# 🔹 Filtreler (sidebar)
+# 🔹 Filters (sidebar)
 st.sidebar.header("Filter")
 
-# Oda sayısı filtresi
-bed_options = sorted(filtered_df['beds'].unique())
-bed_filter = st.sidebar.multiselect("Bedroom:", options=bed_options, default=bed_options)
+# Property Type filter
+type_options = sorted(filtered_df['type'].unique())
+type_filter = st.sidebar.multiselect("Property Type:", options=type_options, default=type_options)
 
-# Fiyat filtresi
+# Bedrooms filter
+bed_options = sorted(filtered_df['beds'].unique())
+bed_filter = st.sidebar.multiselect("Bedrooms:", options=bed_options, default=bed_options)
+
+# Bath filter
+bath_options = sorted(filtered_df['baths'].dropna().unique())
+bath_filter = st.sidebar.multiselect("Bathrooms:", options=bath_options, default=bath_options)
+
+# Price filter
 min_price, max_price = int(filtered_df['listPrice'].min()), int(filtered_df['listPrice'].max())
 price_filter = st.sidebar.slider("Price range:", min_price, max_price, (min_price, max_price))
 
-# Filtreleri uygula
+min_sqft, max_sqft = int(filtered_df['sqft'].min()), int(filtered_df['sqft'].max())
+sqft_filter = st.sidebar.slider("Square Footage Range:", min_sqft, max_sqft, (min_sqft, max_sqft))
+
+# Apply filters
 df_filtered = filtered_df[
+    (filtered_df['type'].isin(type_filter)) &
     (filtered_df['beds'].isin(bed_filter)) &
-    (filtered_df['listPrice'].between(price_filter[0], price_filter[1]))
+    (filtered_df['baths'].isin(bath_filter)) &
+    (filtered_df['listPrice'].between(price_filter[0], price_filter[1])) &
+    (filtered_df['sqft'].between(sqft_filter[0], sqft_filter[1]))
 ]
 
-# Genel İstatistikler
+
+# Common Statistics
 st.subheader("Common Statistics")
 col1, col2, col3 = st.columns(3)
 col1.metric("Total Housing", len(df_filtered))
