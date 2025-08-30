@@ -1,6 +1,8 @@
 import pandas as pd
 import streamlit as st
 import plotly.express as px
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 # read data
 df = pd.read_csv("data/real_estate_texas_500_2024.csv")
@@ -100,3 +102,23 @@ if 'sqft' in df_filtered.columns:
                       hover_data=['baths', 'type'],
                       title='Highlights good vs bad investment opportunities')
     st.plotly_chart(fig4)
+    
+# helps investors compare value across houses, not just absolute price
+df_filtered['price_per_sqft'] = df_filtered['listPrice'] / df_filtered['sqft']
+fig5 = px.histogram(df_filtered, x='price_per_sqft', nbins=50, title='Price per Square Foot Distribution')
+st.plotly_chart(fig5)
+
+
+# Correlation Heatmap
+# Show correlations between price, beds, baths, sqft.
+# Great for data analysis insight.
+st.subheader("Correlation Heatmap")
+corr = df_filtered[['listPrice','beds','baths','sqft']].corr()
+fig6, ax = plt.subplots()
+sns.heatmap(corr, annot=True, cmap="coolwarm", ax=ax)
+st.pyplot(fig6)
+
+# Top 10 Most Expensive Homes
+st.subheader("Top 10 Most Expensive Homes")
+top10 = df_filtered.nlargest(10, 'listPrice')[['type','beds','baths','sqft','listPrice']]
+st.table(top10)
